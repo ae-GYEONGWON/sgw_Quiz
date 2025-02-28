@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:15
-    container_name: quiz_db
+    container_name: sgw_db
     restart: always
     env_file:
       - .env  # .env 파일을 사용하여 환경 변수 설정
@@ -9,20 +9,14 @@ services:
       - "${POSTGRES_PORT}:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
-#    healthcheck:
-#      test: [ "CMD", "pg_isready", "-U", "quiz_admin", "-d", "quiz_db" ]
-#      interval: 5s
-#      retries: 10  # ✅ 재시도 횟수를 늘려서 초기화 시간을 더 확보
-#      start_period: 20s  # ✅ DB 초기화 시간을 더 확보
 
 
   api:
     build: .
-    container_name: fastapi_quiz
+    container_name: sgw_service
     restart: always
     depends_on:
       - db
-#        condition: service_healthy
     env_file:
       - .env
     ports:

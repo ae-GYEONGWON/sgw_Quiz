@@ -4,6 +4,8 @@ FROM python:3.12
 # 작업 디렉토리 설정
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y postgresql-client
+
 # Poetry 설치
 RUN pip install poetry
 
@@ -19,5 +21,9 @@ RUN poetry install --no-root
 # 앱 소스 코드 복사
 COPY src src
 
-# FastAPI 실행
-CMD ["python", "main.py"]
+# Entrypoint 스크립트 복사 (✅ 추가)
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# 컨테이너 시작 시 `entrypoint.sh` 실행 (✅ 변경)
+ENTRYPOINT ["/entrypoint.sh"]

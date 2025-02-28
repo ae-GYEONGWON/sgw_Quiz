@@ -3,9 +3,9 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase
 
-from src.dispatch.config import get_setting
+from src.dispatch.config import get_settings
 
-settings = get_setting()
+settings = get_settings()
 
 SQLALCHEMY_DATABASE_URL = "postgresql+asyncpg://{}:{}@{}:{}/{}".format(
     settings.POSTGRES_USER,
@@ -22,8 +22,6 @@ engine = create_async_engine(
     echo=True
 )
 
-# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-# SessionLocal = sessionmaker(class_=AsyncSession, bind=engine, expire_on_commit=False)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 # SQLAlchemy Base 클래스 정의
